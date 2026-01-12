@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Dev\SFML\SFMLTest\x64\Debug\SFMLTest.exe</FullPath>
+      <FullPath>C:\Dev\SFMLTest\x64\Debug\SFMLTest.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

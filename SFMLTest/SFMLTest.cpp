@@ -1,40 +1,72 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-
 #include <iostream>
+#include <thread>
+
+//Render Thread
+//Not recommended on most cases and i am not going to use 
+void Render(sf::RenderWindow* Window)
+{
+    //Need to activate the window in this thread
+    Window->setActive(true);
+
+    //Rendering Loop
+    while (Window->isOpen())
+    {
+        //Clear the Window with black color
+        Window->clear(sf::Color::Black);
+
+        //Draw everything here
+        //Window.draw(...);
+
+        //Display the current frame
+        Window->display();
+    }
+}
+
+
 
  int main()
 {
      bool bIsSmallWindow = false;
 
     //Drawing the main screen window
-    sf::RenderWindow window(sf::VideoMode({ 800, 800 }), "SFML window");
+    sf::RenderWindow Window(sf::VideoMode({ 800, 800 }), "SFML window");
 
     //Setting window max frame rate
     //dont use vsync and frame rate limit at the same time it makes things worse
-    //window.setFramerateLimit(60);
+    //Window.setFramerateLimit(60);
 
     //Setting window position
-    window.setPosition({ 0,0 });
+    Window.setPosition({ 0,0 });
 
     //Enabling Vsync
     //dont use vsync and frame rate limit at the same time it makes things worse
-    window.setVerticalSyncEnabled(true);
+    Window.setVerticalSyncEnabled(true);
 
     //Getting Screen Size
-    sf::Vector2u WindowSize = window.getSize();
+    sf::Vector2u WindowSize = Window.getSize();
+
+    /*
+    * Not recommended in most cases 
+    //Drawing 
+    // Disable window because same window cant exist on multiple threads
+    Window.setActive(false);
+    //Use the render thread
+    std::thread RenderThread(&Render, &Window);
+    */
 
 
     //Main Loop
-    while (window.isOpen())
+    while (Window.isOpen())
     {
 
         //Checking for events
-        while (const std::optional event = window.pollEvent())
+        while (const std::optional event = Window.pollEvent())
         {
             //Windows close button clicked
             if (event->is<sf::Event::Closed>())
-                window.close();
+                Window.close();
 
             //Check if any key pressed during this loop
 
@@ -42,18 +74,18 @@
             {
                 //Close window if escape button pressed
                 if (KeyPress->scancode == sf::Keyboard::Scancode::Escape)
-                    window.close();
+                    Window.close();
 
                 if (KeyPress->scancode == sf::Keyboard::Scancode::R)
                 {
                     if (bIsSmallWindow)
                     {
-                        window.setSize(sf::Vector2u(100, 100));
+                        Window.setSize(sf::Vector2u(100, 100));
                         bIsSmallWindow = !bIsSmallWindow;
                     }
                     else
                     {
-                        window.setSize(sf::Vector2u(800, 800));
+                        Window.setSize(sf::Vector2u(800, 800));
                         bIsSmallWindow = !bIsSmallWindow;
                     }
                 }
@@ -66,15 +98,17 @@
         //sf::Vector2i Mouseposition = sf::Mouse::getPosition();
         //std::cout << Mouseposition.x << "," << Mouseposition.y << "\n";
 
-        //Drawing 
-
-        //Clear the window with black color
-        window.clear(sf::Color::Black);
+        //Render
+        //Clear the Window with black color
+        Window.clear(sf::Color::Black);
 
         //Draw everything here
-        //window.draw(...);
+        //Window.draw(...);
 
         //Display the current frame
-        window.display();
+        Window.display();
+
     }
+    
+    //RenderThread.join();
 }
