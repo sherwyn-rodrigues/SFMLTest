@@ -25,6 +25,15 @@ void Render(sf::RenderWindow* Window)
 }
 
 
+//Create shapes and fraw them 
+void CreatAndDrawShapes(sf::RenderWindow* Window)
+{
+    sf::CircleShape Circle(20.f);
+    Circle.setFillColor(sf::Color::Green);
+    Window->draw(Circle);
+    
+}
+
 
  int main()
 {
@@ -104,6 +113,7 @@ void Render(sf::RenderWindow* Window)
 
         //Draw everything here
         //Window.draw(...);
+        CreatAndDrawShapes(&Window);
 
         //Display the current frame
         Window.display();
